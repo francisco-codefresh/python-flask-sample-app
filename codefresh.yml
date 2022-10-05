@@ -20,6 +20,15 @@ steps:
       tag: '${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_SHORT_REVISION}}'
       dockerfile: Dockerfile
     stage: package
+    
+  MyUnitTests:
+    title: Running Unit tests
+    image: '${{BuildingDockerImage}}'
+    stage: test 
+    commands: 
+      - pip install pytest
+      - pytest
+  
   deploy:
     title: Storing Helm chart
     type: helm
@@ -46,3 +55,10 @@ steps:
       - 'image_repository=r.cfcr.io/kostis-codefresh/my-flask-app'
       - 'image_tag=${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_SHORT_REVISION}}'
       - 'image_pullSecret=codefresh-generated-r.cfcr.io-cfcr-default'      
+
+#    image_name: my-app-image
+#    working_directory: ./
+#    tag: v1.0.1
+#    dockerfile: Dockerfile
+#    disable_push: true
+
